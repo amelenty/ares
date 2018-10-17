@@ -1,6 +1,6 @@
 import tcod
 
-from handle_keys import handle_keys
+from input_handlers import handle_keys
 
 
 def main():
