@@ -1,7 +1,22 @@
 import tcod
 
+OFFSET_X = 5
+OFFSET_Y = 0
 
-def render_all(console, entities, screen_width, screen_height):
+
+def render_all(console, entities, game_map, screen_width, screen_height, colors):
+    # Draw all the tiles in the game map
+    for y in range(game_map.height):
+        for x in range(game_map.width):
+            wall = game_map.tiles[x][y].block_sight
+
+            if wall:
+                tcod.console_set_char_background(console, OFFSET_X + x, OFFSET_Y + y, colors.get('dark_wall'),
+                                                 tcod.BKGND_SET)
+            else:
+                tcod.console_set_char_background(console, OFFSET_X + x, OFFSET_Y + y, colors.get('dark_ground'),
+                                                 tcod.BKGND_SET)
+
     # Draw all entities in the list
     for entity in entities:
         draw_entity(console, entity)
@@ -16,9 +31,9 @@ def clear_all(con, entities):
 
 def draw_entity(con, entity):
     tcod.console_set_default_foreground(con, entity.color)
-    tcod.console_put_char(con, entity.x, entity.y, entity.char, tcod.BKGND_NONE)
+    tcod.console_put_char(con, OFFSET_X + entity.x, OFFSET_Y + entity.y, entity.char, tcod.BKGND_NONE)
 
 
 def clear_entity(con, entity):
     # erase the character that represents this object
-    tcod.console_put_char(con, entity.x, entity.y, ' ', tcod.BKGND_NONE)
+    tcod.console_put_char(con, OFFSET_X + entity.x, OFFSET_Y + entity.y, ' ', tcod.BKGND_NONE)
