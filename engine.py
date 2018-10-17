@@ -2,6 +2,7 @@ import tcod
 
 from entity import Entity
 from input_handlers import handle_keys
+from render import render_all, clear_all
 
 
 def main():
@@ -9,7 +10,7 @@ def main():
     screen_height = 50
 
     player = Entity(screen_width // 2, screen_height // 2, '@', tcod.green)
-    npc = Entity(screen_width // 2 - 5, screen_height // 2, 'N', tcod.gray)
+    npc = Entity(screen_width // 2 - 5, screen_height // 2, 'N', tcod.darker_green)
     entities = [npc, player]
 
     tcod.console_set_custom_font('arial10x10.png', tcod.FONT_TYPE_GREYSCALE | tcod.FONT_LAYOUT_TCOD)
@@ -22,8 +23,11 @@ def main():
     while not tcod.console_is_window_closed():
         tcod.sys_check_for_event(tcod.EVENT_KEY_PRESS, key, mouse)
 
-        tcod.console_set_default_foreground(console, tcod.white)
+        render_all(console, entities, screen_width, screen_height)
+
         tcod.console_flush()
+
+        clear_all(console, entities)
 
         action = handle_keys(key)
 
